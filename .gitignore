@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/EFI-Runner/bin/Debug/net7.0
+/.vs
+/EFI-Runner/obj
