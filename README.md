@@ -4,6 +4,9 @@ EFI-Runner is a tool for running EFI files with Qemu Virtual Machine in fastest 
 ## Requirements
 This tool requires Qemu preinstalled. It extracts the OVMF BIOS image and Shell EFI app itself. For Powershell version, it probably needs Powershell to be installed.
 
+## Download
+Download the lastest version from Releases page. You can also get a debug build from Actions tab.
+
 ## Installation
 No installation required. Just extract the zip to anywhere you want and execute it.
 
