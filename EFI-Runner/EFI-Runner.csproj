@@ -37,7 +37,6 @@
     <None Remove="Resources\linuxboot_dma.bin" />
     <None Remove="Resources\OVMF.fd" />
     <None Remove="Resources\qemu-system-x86_64.exe" />
-    <None Remove="Resources\Shell.efi" />
     <None Remove="Resources\vgabios-stdvga.bin" />
     <None Remove="Resources\vm.zip" />
   </ItemGroup>
@@ -51,7 +50,6 @@
     <EmbeddedResource Include="Resources\linuxboot_dma.bin" />
     <EmbeddedResource Include="Resources\OVMF.fd" />
     <EmbeddedResource Include="Resources\qemu-system-x86_64.exe" />
-    <EmbeddedResource Include="Resources\Shell.efi" />
     <EmbeddedResource Include="Resources\vgabios-stdvga.bin" />
   </ItemGroup>
 

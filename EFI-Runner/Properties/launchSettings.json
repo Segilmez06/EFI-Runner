@@ -10,6 +10,10 @@
     },
     "Clean Run": {
       "commandName": "Project"
+    },
+    "External": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\VMs\\Zyex-Linux\\bootx64_signed.efi\""
     }
   }
 }

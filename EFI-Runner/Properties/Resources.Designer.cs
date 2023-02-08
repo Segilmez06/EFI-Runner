@@ -113,16 +113,6 @@ namespace EFI_Runner.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Shell {
-            get {
-                object obj = ResourceManager.GetObject("Shell", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         internal static byte[] vgabios_stdvga {
             get {
                 object obj = ResourceManager.GetObject("vgabios_stdvga", resourceCulture);
