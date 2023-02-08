@@ -6,6 +6,64 @@
     <RootNamespace>EFI_Runner</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <StartupObject>EFI_Runner.Program</StartupObject>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+    <SignAssembly>False</SignAssembly>
+    <Title>Use Qemu to run EFI files on Windows in the fastest way</Title>
+    <Authors>Segilmez06</Authors>
+    <Company>Zyex Software</Company>
+    <Description>EFI-Runner is a tool for running EFI files with Qemu Virtual Machine in fastest way.</Description>
+    <RepositoryUrl>https://github.com/Segilmez06/EFI-Runner</RepositoryUrl>
+    <NeutralLanguage>en</NeutralLanguage>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <Version>$(AssemblyVersion)</Version>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <ApplicationIcon>Resources\EFI.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\OVMF.fd" />
+    <None Remove="Resources\Shell.efi" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\EFI.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\OVMF.fd" />
+    <EmbeddedResource Include="Resources\Shell.efi" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
 
 </Project>
