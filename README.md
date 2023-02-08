@@ -1,4 +1,7 @@
 # EFI-Runner
+[![Debug build](https://github.com/Segilmez06/EFI-Runner/actions/workflows/debug-build.yml/badge.svg)](https://github.com/Segilmez06/EFI-Runner/actions/workflows/debug-build.yml)
+[![Release build](https://github.com/Segilmez06/EFI-Runner/actions/workflows/release-build.yml/badge.svg)](https://github.com/Segilmez06/EFI-Runner/actions/workflows/release-build.yml)
+
 EFI-Runner is a tool for running EFI files with Qemu Virtual Machine in fastest way. It's CLI app but can be used with Windows Explorer as click to run. Also supports file association.
 
 ## Requirements
