@@ -21,7 +21,6 @@ Usage:
 Options:
     --help, -h          Show this help message
     --version, -v       Show version information
-    --default, -d       Use default file (Shell.efi)
 ```
 Examples:
 - Directly booting into Shell:
