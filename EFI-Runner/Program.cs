@@ -79,19 +79,20 @@ Options:
                 file = default_file;
             }
 
+            string ExecuteLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+
             foreach (string f in Assembly.GetExecutingAssembly().GetManifestResourceNames().Skip(1))
             {
                 string filename = string.Join('.', f.Split('.').Skip(2).ToArray());
                 if (!File.Exists(filename))
                 {
-                    FileStream fileStream = File.Create(filename);
+                    FileStream fileStream = File.Create(Path.Combine(ExecuteLocation, filename));
                     Console.WriteLine($"Resource {filename} not found! Copying...");
                     Assembly.GetExecutingAssembly().GetManifestResourceStream(f).CopyTo(fileStream);
                     fileStream.Close();
                 }
             }
 
-            string ExecuteLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             string argString = "";
             argString += $"-m {memory}G ";
             if (blockNetBoot)
