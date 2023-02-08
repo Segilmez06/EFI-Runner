@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using EFI_Runner.Properties;
+using System.Diagnostics;
 using System.Reflection;
+using System.IO.Compression;
 
 namespace EFI_Runner
 {
@@ -31,15 +33,8 @@ Options:
             string default_file = "Shell.efi";
             string file = "";
 
-            try
-            {
-                Process.Start(command).Kill();
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Qemu not found!");
-                Environment.Exit(0);
-            }
+            string ExecuteLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            string vmPath = Path.Combine(ExecuteLocation, command);
 
             if (args.Length > 0)
             {
@@ -79,8 +74,6 @@ Options:
                 file = default_file;
             }
 
-            string ExecuteLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-
             foreach (string f in Assembly.GetExecutingAssembly().GetManifestResourceNames().Skip(1))
             {
                 string filename = string.Join('.', f.Split('.').Skip(2).ToArray());
@@ -91,6 +84,18 @@ Options:
                     Assembly.GetExecutingAssembly().GetManifestResourceStream(f).CopyTo(fileStream);
                     fileStream.Close();
                 }
+            }
+
+            while (!File.Exists(vmPath)) ;
+
+            try
+            {
+                Process.Start(vmPath).Kill();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Unable to start Qemu!");
+                Environment.Exit(0);
             }
 
             string argString = "";
@@ -108,7 +113,7 @@ Options:
 
             var psi = new ProcessStartInfo()
             {
-                FileName = command,
+                FileName = vmPath,
                 Arguments = argString
             };
 

@@ -73,6 +73,26 @@ namespace EFI_Runner.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] kvmvapic {
+            get {
+                object obj = ResourceManager.GetObject("kvmvapic", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] linuxboot_dma {
+            get {
+                object obj = ResourceManager.GetObject("linuxboot_dma", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] OVMF {
             get {
                 object obj = ResourceManager.GetObject("OVMF", resourceCulture);
@@ -83,9 +103,29 @@ namespace EFI_Runner.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] qemu_system_x86_64 {
+            get {
+                object obj = ResourceManager.GetObject("qemu_system_x86_64", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] Shell {
             get {
                 object obj = ResourceManager.GetObject("Shell", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vgabios_stdvga {
+            get {
+                object obj = ResourceManager.GetObject("vgabios_stdvga", resourceCulture);
                 return ((byte[])(obj));
             }
         }
