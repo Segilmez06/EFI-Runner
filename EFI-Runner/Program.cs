@@ -163,6 +163,8 @@ Options:
                 Exit(false);
             }
 
+
+            //Debug.WriteLine(InputLanguage.DefaultInputLanguage.Culture.TwoLetterISOLanguageName);
             
             // Set process arguments
             string argString = "";
