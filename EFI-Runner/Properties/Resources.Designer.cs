@@ -73,6 +73,16 @@ namespace EFI_Runner.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] en_us {
+            get {
+                object obj = ResourceManager.GetObject("en_us", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] kvmvapic {
             get {
                 object obj = ResourceManager.GetObject("kvmvapic", resourceCulture);

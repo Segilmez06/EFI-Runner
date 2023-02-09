@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net7.0-windows10.0.22621.0</TargetFramework>
     <RootNamespace>EFI_Runner</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -20,6 +20,8 @@
     <FileVersion>$(AssemblyVersion)</FileVersion>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <ApplicationIcon>Resources\EFI.ico</ApplicationIcon>
+    <UseWindowsForms>True</UseWindowsForms>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -33,6 +35,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\en-us" />
     <None Remove="Resources\kvmvapic.bin" />
     <None Remove="Resources\linuxboot_dma.bin" />
     <None Remove="Resources\OVMF.fd" />
@@ -46,6 +49,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\en-us" />
     <EmbeddedResource Include="Resources\kvmvapic.bin" />
     <EmbeddedResource Include="Resources\linuxboot_dma.bin" />
     <EmbeddedResource Include="Resources\OVMF.fd" />
@@ -58,6 +62,11 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MarcusW.VncClient" Version="1.0.0-alpha4" />
+    <PackageReference Include="VncSharp" Version="1.0.7" />
   </ItemGroup>
 
   <ItemGroup>

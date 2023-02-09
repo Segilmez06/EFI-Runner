@@ -1,6 +1,8 @@
 ﻿using Microsoft.Win32;
 using System.Diagnostics;
+using System.Net.Sockets;
 using System.Reflection;
+using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 
@@ -11,7 +13,18 @@ namespace EFI_Runner
         [DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern void SHChangeNotify(uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
 
-        
+        //[DllImport("user32.dll")]
+        //public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+
+        //[DllImport("user32.dll", SetLastError = true)]
+        //public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+
+        //[DllImport("USER32.DLL")]
+        //public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
+
         // Save last foreground and background colors
         static ConsoleColor f = Console.ForegroundColor;
         static ConsoleColor b = Console.BackgroundColor;
@@ -22,8 +35,6 @@ namespace EFI_Runner
             string exePath = Path.Combine(envPath, "EFI-Runner.exe");
 
 
-            #if DEBUG
-            #else
             // If first run then install app
             if (!Path.Exists(exePath))
             {
@@ -65,9 +76,12 @@ namespace EFI_Runner
                 
                 
                 SetLoading(false);
-                Exit();
+
+                if (!Debugger.IsAttached)
+                {
+                    Exit();
+                }
             }
-            #endif
 
 
             // Command line arguments
@@ -99,7 +113,7 @@ Options:
                 string arg = args[0];
                 if (File.Exists(arg))
                 {
-                    Console.Title = $"{arg} - EFI-Runner";
+                    Console.Title = $"Running - EFI-Runner";
                     kernelPath = Path.GetFullPath(arg);
                 }
                 else
@@ -154,6 +168,7 @@ Options:
             string argString = "";
             argString += $"-m {memory}G ";
             argString += $"-serial stdio ";
+            //argString += $"-display none -vnc :0 ";
             argString += $"-no-reboot -no-shutdown ";
             argString += $"-net none ";
             argString += $"-bios {biosPath} ";
@@ -172,10 +187,25 @@ Options:
             
             // Run
             p.Start();
-            p.WaitForExit();
+
+
+            // Nothing to see here -- Just setting Qemu to dark theme
+            while (p.MainWindowHandle == 0) ;
+            IntPtr QemuHandle = p.MainWindowHandle;
+            int color = 1;
+            if (Environment.OSVersion.Version.Build > 22000)
+            {
+                DwmSetWindowAttribute(QemuHandle, 20, ref color, sizeof(int));
+            }
+            else
+            {
+                DwmSetWindowAttribute(QemuHandle, 38, ref color, sizeof(int));
+            }
 
 
             // Exit
+            p.WaitForExit();
+            p.Kill();
             Exit();
         }
 
