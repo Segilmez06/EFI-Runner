@@ -121,10 +121,22 @@
   <data name="EFI" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\EFI.ico;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="en_us" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\en-us;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="kvmvapic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\kvmvapic.bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="linuxboot_dma" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\linuxboot_dma.bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="OVMF" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\OVMF.fd;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Shell" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Shell.efi;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="qemu_system_x86_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\qemu-system-x86_64.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vgabios_stdvga" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\vgabios-stdvga.bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

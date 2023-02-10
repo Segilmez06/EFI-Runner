@@ -5,7 +5,9 @@
 EFI-Runner is a tool for running EFI files with Qemu Virtual Machine in fastest way. It's CLI app but can be used with Windows Explorer as click to run. Also supports file association.
 
 ## Requirements
-This tool requires Qemu preinstalled. It extracts the OVMF BIOS image and Shell EFI app itself. For Powershell version, it probably needs Powershell to be installed.
+This tool extracts 64-bit Qemu VM, OVMF BIOS image and Shell EFI app itself. But you must install .Net 7 Runtime.
+
+For Powershell version, it probably needs Powershell and Qemu installed. Also you have to put OVMF BIOS image and Shell EFI app to the working directory. You can download them here: [EFI-Runner/powershell](https://github.com/Segilmez06/EFI-Runner/tree/main/powershell)
 
 ## Download
 Download the lastest version from [Releases page](https://github.com/Segilmez06/EFI-Runner/releases/latest). You can also get a [debug build from Actions tab](https://github.com/Segilmez06/EFI-Runner/actions/workflows/debug-build.yml).
@@ -22,7 +24,6 @@ Usage:
 Options:
     --help, -h          Show this help message
     --version, -v       Show version information
-    --default, -d       Use default file (Shell.efi)
 ```
 Examples:
 - Directly booting into Shell:
@@ -32,8 +33,7 @@ Examples:
   `efi-runner .\bootx64.efi`
   
 ## Building
-This tool is built on .Net 7 so it requires .Net version >= 7 while building. You can just open the solution file with your favorite IDE and build it.
+This tool is built on .Net 7 so it requires .Net SDK version >= 7 while building. [Also you can install Runtime for testing](#requirements). You can just open the solution file with your favorite IDE and build it.
 
 ## Contributing
-You can create pull requests and issues to help development.
-
+You can create pull requests and issues to help development. Also starring the repo will give me motivation.

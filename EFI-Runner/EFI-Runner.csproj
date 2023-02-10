@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net7.0-windows10.0.22621.0</TargetFramework>
     <RootNamespace>EFI_Runner</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -20,6 +20,8 @@
     <FileVersion>$(AssemblyVersion)</FileVersion>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <ApplicationIcon>Resources\EFI.ico</ApplicationIcon>
+    <UseWindowsForms>True</UseWindowsForms>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -33,8 +35,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\en-us" />
+    <None Remove="Resources\kvmvapic.bin" />
+    <None Remove="Resources\linuxboot_dma.bin" />
     <None Remove="Resources\OVMF.fd" />
-    <None Remove="Resources\Shell.efi" />
+    <None Remove="Resources\qemu-system-x86_64.exe" />
+    <None Remove="Resources\vgabios-stdvga.bin" />
+    <None Remove="Resources\vm.zip" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,8 +49,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\en-us" />
+    <EmbeddedResource Include="Resources\kvmvapic.bin" />
+    <EmbeddedResource Include="Resources\linuxboot_dma.bin" />
     <EmbeddedResource Include="Resources\OVMF.fd" />
-    <EmbeddedResource Include="Resources\Shell.efi" />
+    <EmbeddedResource Include="Resources\qemu-system-x86_64.exe" />
+    <EmbeddedResource Include="Resources\vgabios-stdvga.bin" />
   </ItemGroup>
 
   <ItemGroup>

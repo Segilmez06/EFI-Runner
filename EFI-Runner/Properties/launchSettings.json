@@ -10,6 +10,14 @@
     },
     "Clean Run": {
       "commandName": "Project"
+    },
+    "External": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\VMs\\Zyex-Linux\\bootx64_signed.efi\""
+    },
+    "Keymap": {
+      "commandName": "Project",
+      "commandLineArgs": "-k tr \"C:\\VMs\\Zyex-Linux\\bootx64_signed.efi\""
     }
   }
 }
