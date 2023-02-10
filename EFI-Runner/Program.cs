@@ -1,8 +1,6 @@
 ﻿using Microsoft.Win32;
 using System.Diagnostics;
-using System.Net.Sockets;
 using System.Reflection;
-using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 
@@ -13,21 +11,25 @@ namespace EFI_Runner
         [DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern void SHChangeNotify(uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
 
-        //[DllImport("user32.dll")]
-        //public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
-
-        //[DllImport("user32.dll", SetLastError = true)]
-        //public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
-
-        //[DllImport("USER32.DLL")]
-        //public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
         [DllImport("dwmapi.dll")]
         private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
 
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool SetConsoleCtrlHandler(ConsoleEventDelegate callback, bool add);
+
+
+        private delegate bool ConsoleEventDelegate(int eventType);
+
+
         // Save last foreground and background colors
-        static ConsoleColor f = Console.ForegroundColor;
-        static ConsoleColor b = Console.BackgroundColor;
+        private static ConsoleColor f = Console.ForegroundColor;
+        private static ConsoleColor b = Console.BackgroundColor;
+
+
+        // Process
+        private static Process p;
 
         static void Main(string[] args)
         {
@@ -44,7 +46,7 @@ namespace EFI_Runner
                 Console.WriteLine("First run detected. Installing EFI-Runner");
                 Console.WriteLine();
 
-                
+
                 WriteStatus(1, 4, "Prepearing");
                 string SourceFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 if (!Directory.Exists(envPath))
@@ -53,7 +55,7 @@ namespace EFI_Runner
                 }
                 Console.WriteLine();
 
-                
+
                 WriteStatus(2, 4, "Copying base files");
                 foreach (string file in Directory.GetFiles(SourceFolder))
                 {
@@ -61,20 +63,20 @@ namespace EFI_Runner
                 }
                 Console.WriteLine();
 
-                
+
                 WriteStatus(3, 4, "Copying external tools");
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 ExtractResources(envPath);
                 Console.WriteLine();
 
-                
+
                 WriteStatus(4, 4, "Registering extensions");
                 if (new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator))
                 {
                     FileAssociation(".efi", "EFI Executable", "EFI_File", Path.Combine(Assembly.GetEntryAssembly().Location));
                 }
-                
-                
+
+
                 SetLoading(false);
 
                 if (!Debugger.IsAttached)
@@ -85,32 +87,55 @@ namespace EFI_Runner
 
 
             // Command line arguments
-            string[] help_identifier = new string[] { "--help", "-h", "/?", "/h", "/help", "-?" };
-            string[] version_identifier = new string[] { "--version", "-v", "/v", "/version", "-version", "--ver", "-ver" };
+            string[] help_identifier = new string[] { "--help", "-h" };
+            string[] version_identifier = new string[] { "--version", "-v" };
 
             string help_msg = @"
 Usage: 
-    efi-runner [file]
+    efi-runner [-k keymap] [file]
     efi-runner [option]
 
 Options:
     --help, -h          Show this help message
     --version, -v       Show version information
+    -k keymap           Keymap for Qemu.
 ";
             string version_msg = $"EFI-Runner {Assembly.GetEntryAssembly().GetName().Version}";
 
-            
+
             // VM settings
             int memory = 1; // In GB scale
             string vmPath = Path.Combine(envPath, "qemu-system-x86_64.exe");
             string biosPath = Path.Combine(envPath, "OVMF.fd");
             string kernelPath = "";
+            string keymap = "en-us";
 
-            
+
             // Check for args
             if (args.Length > 0)
             {
-                string arg = args[0];
+                var argList = args.ToList();
+                
+                if (argList.Contains("-k"))
+                {
+                    int argIndex = argList.IndexOf("-k");
+                    if (argList.Count()-1 == argIndex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Error while parsing keymap!");
+                        Exit(false);
+                    }
+                    else
+                    {
+                        int keymapIndex = argIndex + 1;
+                        keymap = args[keymapIndex];
+                        Debug.WriteLine(keymap);
+
+                        argList.RemoveRange(argIndex, 2);
+                    }
+                }
+                
+                string arg = argList[0];
                 if (File.Exists(arg))
                 {
                     Console.Title = $"Running - EFI-Runner";
@@ -131,7 +156,7 @@ Options:
                     }
                     else
                     {
-                        
+
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("File not found!");
                         Exit(false);
@@ -150,7 +175,7 @@ Options:
             if (!File.Exists(vmPath))
             {
                 ExtractResources(envPath);
-                while (!File.Exists(vmPath));
+                while (!File.Exists(vmPath)) ;
             }
             try
             {
@@ -164,13 +189,12 @@ Options:
             }
 
 
-            //Debug.WriteLine(InputLanguage.DefaultInputLanguage.Culture.TwoLetterISOLanguageName);
-            
             // Set process arguments
             string argString = "";
             argString += $"-m {memory}G ";
             argString += $"-serial stdio ";
             //argString += $"-display none -vnc :0 ";
+            argString += $"-k {keymap} ";
             argString += $"-no-reboot -no-shutdown ";
             argString += $"-net none ";
             argString += $"-bios {biosPath} ";
@@ -181,12 +205,23 @@ Options:
                 Arguments = argString,
                 WorkingDirectory = envPath
             };
-            var p = new Process()
+            p = new Process()
             {
                 StartInfo = psi
             };
 
-            
+
+            // Terminate Qemu when console window closed
+            SetConsoleCtrlHandler(new ConsoleEventDelegate(delegate (int e)
+            {
+                if (e == 2)
+                {
+                    p.Kill();
+                }
+                return false;
+            }), true);
+
+
             // Run
             p.Start();
 
@@ -226,7 +261,7 @@ Options:
                 }
             }
         }
-    
+
         private static void FileAssociation(string FileExtension, string FriendlyDescription, string Key, string ExecutablePath)
         {
             // Create registry key for file type
@@ -275,7 +310,7 @@ Options:
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine(Message);
         }
-    
+
         private static void SetLoading(bool State)
         {
             if (State)
